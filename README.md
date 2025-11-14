@@ -182,10 +182,3 @@ jupyter notebook notebooks/EDA_Análisis_Exploratorio.ipynb
 - **MLflow** - Experiment tracking y Model Registry
 - **Matplotlib/Seaborn** - Visualización
 
-## 📞 Contacto
-
-Para preguntas o problemas, consulta la documentación del proyecto o contacta al equipo.
-
-## 📄 Licencia
-
-Este proyecto es parte del curso de Machine Learning Operations.
