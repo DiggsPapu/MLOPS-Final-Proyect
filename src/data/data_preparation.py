@@ -45,6 +45,50 @@ def clean_data(df):
     
     return df
 
+def validate_data(df):
+    """Validación de calidad de datos"""
+
+    print("\n🔍 Validando calidad de datos...")
+
+    report = {}
+
+    # 1) Valores faltantes
+    report["missing_values"] = df.isnull().sum()
+
+    # 2) Fechas vacías
+    if "call_time" in df.columns:
+        report["invalid_dates"] = df["call_time"].isna().sum()
+
+    # 3) Valores fuera de rango
+    if "dias_mora" in df.columns:
+        report["dias_mora_negative"] = (df["dias_mora"] < 0).sum()
+
+    if "wait_time_seconds" in df.columns:
+        report["negative_wait_time"] = (df["wait_time_seconds"] < 0).sum()
+
+    # 4) Balance objetivo
+    if "abandono" in df.columns:
+        target_ratio = df["abandono"].mean()
+        report["target_balance"] = f"{target_ratio:.2f} (ideal ≈ 0.50)"
+
+        if not (0.40 <= target_ratio <= 0.60):
+            print(f"⚠ Target desbalanceado: {target_ratio:.2f}")
+
+    # 5) Valores inválidos categóricos
+    expected_segments = {"Alto", "Medio", "Bajo"}
+    if "segmento_riesgo" in df.columns:
+        invalid_seg = set(df["segmento_riesgo"].dropna()) - expected_segments
+        report["segmento_invalidos"] = invalid_seg
+
+    # 6) Duplicados restantes
+    report["remaining_duplicates"] = df.duplicated().sum()
+
+    print("\n📌 Reporte calidad de datos:\n")
+    for k, v in report.items():
+        print(f" - {k}: {v}")
+
+    print("\n✨ Validación completada.\n")
+    return df
 
 def feature_engineering(df):
     """Feature engineering"""
@@ -137,6 +181,9 @@ def prepare_data(data_path=None):
     
     # Limpiar
     df = clean_data(df)
+    
+    # Validar los datos
+    df = validate_data(df)
     
     # Feature engineering
     df = feature_engineering(df)

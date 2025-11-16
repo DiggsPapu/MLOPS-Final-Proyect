@@ -175,17 +175,3 @@ print("\n✅ Transformación completa")
 print("Train procesado →", X_train_proc.shape)
 print("Val procesado   →", X_val_proc.shape)
 print("Test procesado  →", X_test_proc.shape)
-
-
-# ===============================================================
-# ✅ (Opcional) Ejemplo con modelo
-# ===============================================================
-from sklearn.linear_model import LogisticRegression
-
-clf = LogisticRegression(max_iter=1000)
-clf.fit(X_train_proc, y_train)
-
-preds = clf.predict(X_val_proc)
-
-print("\n📌 Reporte de validación:")
-print(classification_report(y_val, preds))
