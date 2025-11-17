@@ -82,6 +82,14 @@ def train_logistic_regression(X_train, y_train, X_val, y_val):
         # Log parámetros
         mlflow.log_params(best_params)
         mlflow.log_param("model_type", "LogisticRegression")
+        # NEW: Log full param search configuration
+        mlflow.log_dict(param_grid, "hyperparameter_space_logistic_regression.json")
+
+        # NEW: Log CV results (scikit returns a dict)
+        cv_results = pd.DataFrame(random_search.cv_results_)
+        mlflow.log_table(cv_results, artifact_file="cv_results_logistic_regression.json")
+        # NEW: Log the SearchCV object for reproducibility
+        mlflow.sklearn.log_model(random_search, "search_model_logistic_regression")
         
         # Log métricas
         mlflow.log_metrics(metrics)
@@ -150,6 +158,14 @@ def train_random_forest(X_train, y_train, X_val, y_val):
         # Log parámetros
         mlflow.log_params(best_params)
         mlflow.log_param("model_type", "RandomForest")
+        # NEW: Log full param search configuration
+        mlflow.log_dict(param_grid, "hyperparameter_space_random_forest.json")
+
+        # NEW: Log CV results (scikit returns a dict)
+        cv_results = pd.DataFrame(random_search.cv_results_)
+        mlflow.log_table(cv_results, artifact_file="cv_results_random_forest.json")
+        # NEW: Log the SearchCV object for reproducibility
+        mlflow.sklearn.log_model(random_search, "search_model_random_forest")
         
         # Log métricas
         mlflow.log_metrics(metrics)
@@ -219,6 +235,16 @@ def train_xgboost(X_train, y_train, X_val, y_val):
         # Log parámetros
         mlflow.log_params(best_params)
         mlflow.log_param("model_type", "XGBoost")
+        
+        # NEW: Log full param search configuration
+        mlflow.log_dict(param_grid, "hyperparameter_space_xgboost.json")
+
+        # NEW: Log CV results (scikit returns a dict)
+        cv_results = pd.DataFrame(random_search.cv_results_)
+        mlflow.log_table(cv_results, artifact_file="cv_results_xgboost.json")
+
+        # NEW: Log the SearchCV object for reproducibility
+        mlflow.sklearn.log_model(random_search, "search_model_xgboost")
         
         # Log métricas
         mlflow.log_metrics(metrics)
@@ -290,7 +316,17 @@ def train_lightgbm(X_train, y_train, X_val, y_val):
         # Log parámetros
         mlflow.log_params(best_params)
         mlflow.log_param("model_type", "LightGBM")
-        
+
+        # NEW: Log full param search configuration
+        mlflow.log_dict(param_grid, "hyperparameter_space_lightgbm.json")
+
+        # NEW: Log CV results (scikit returns a dict)
+        cv_results = pd.DataFrame(random_search.cv_results_)
+        mlflow.log_table(cv_results, artifact_file="cv_results_lightgbm.json")
+
+        # NEW: Log the SearchCV object for reproducibility
+        mlflow.sklearn.log_model(random_search, "search_model_lightgbm")
+
         # Log métricas
         mlflow.log_metrics(metrics)
         
